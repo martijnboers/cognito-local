@@ -57,9 +57,33 @@ export const createServer = (
 
   app.get("/:userPoolId/.well-known/openid-configuration", (req, res) => {
     res.status(200).json({
-      id_token_signing_alg_values_supported: ["RS256"],
+      authorization_endpoint: "http://localhost:9229/oauth2/authorize",
+      end_session_endpoint: "http://localhost:9229/logout",
+      id_token_signing_alg_values_supported: [
+        "RS256"
+      ],
+      issuer: `http://localhost:9229/${req.params.userPoolId}/.well-known/jwks.json`,
       jwks_uri: `http://localhost:9229/${req.params.userPoolId}/.well-known/jwks.json`,
-      issuer: `http://localhost:9229/${req.params.userPoolId}`,
+      response_types_supported: [
+        "code",
+        "token"
+      ],
+      revocation_endpoint: "http://localhost:9229/oauth2/revoke",
+      scopes_supported: [
+        "openid",
+        "email",
+        "phone",
+        "profile"
+      ],
+      subject_types_supported: [
+        "public"
+      ],
+      token_endpoint: "http://localhost:9229/oauth2/token",
+      token_endpoint_auth_methods_supported: [
+        "client_secret_basic",
+        "client_secret_post"
+      ],
+      userinfo_endpoint: "http://localhost:9229/oauth2/userInfo"
     });
   });
 
